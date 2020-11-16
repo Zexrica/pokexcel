@@ -1,8 +1,4 @@
-var serverPath =
-    [
-        'https://pokepast.es/90889b84d58e534c',
-        'https://pokepast.es/36756b297e80d1c4',
-    ];
+var pokepasteArray = [];
 
 var loadHtml = function (path, callback) {
     var xhr = new XMLHttpRequest();
@@ -16,9 +12,16 @@ var loadHtml = function (path, callback) {
 };
 
 var displayHtml = function () {
-    var arrayData = [];
-    for (let index = 0; index < serverPath.length; index++) {
-        loadHtml(serverPath[index], function (html) {
+    // Get input box and assign the content to an array
+    formValue = document.getElementById('inputForm').value;
+    console.log(formValue)
+    formValue = formValue.split(" ");
+    pokepasteArray.push(formValue);
+    console.log(pokepasteArray);
+
+    var dataArray = [];
+    for (let index = 0; index < pokepasteArray.length; index++) {
+        loadHtml(pokepasteArray[index], function (html) {
             document.querySelector('.page_content_wrapper').innerHTML = html;
 
             const pokemon = document.querySelector('.page_content_wrapper').getElementsByTagName('pre');
@@ -68,11 +71,12 @@ var displayHtml = function () {
                     move3 = pokemonText.slice(nl7 + 3, nl8 - 2);
                     move4 = pokemonText.slice(nl8 + 3, pokemonText.length - 4);
                 };
-                arrayData[index2 + (index * 6)] = [name, item, ability, nature, move1, move2, move3, move4];
+                dataArray[index2 + (index * 6)] = [name, item, ability, nature, move1, move2, move3, move4];
             };
 
-            if (index == serverPath.length - 1) {
-                export_csv(arrayHeader, arrayData, ',', 'Teams');
+            if (index == pokepasteArray.length - 1) {
+                console.log(dataArray)
+                export_csv(arrayHeader, dataArray, ',', 'Teams');
             };
         });
     };
@@ -81,10 +85,10 @@ var displayHtml = function () {
 
 const arrayHeader = ["Pokemon", "item", "ability", "nature", "move1", "move2", "move3", "move4"];
 
-const export_csv = (arrayHeader, arrayData, delimiter, fileName) => {
+const export_csv = (arrayHeader, dataArray, delimiter, fileName) => {
     let header = arrayHeader.join(delimiter) + '\n';
     let csv = header;
-    arrayData.forEach(array => {
+    dataArray.forEach(array => {
         csv += array.join(delimiter) + "\n";
     });
 

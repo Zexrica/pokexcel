@@ -10,7 +10,13 @@
 <body>
     <script src=Extract.js></script>
 
-    <button onclick="displayHtml();">Download csv</button>
+    <form onsubmit="return false;">
+        <p>Pokepastes</p>
+        <input type="text" id="inputForm">
+        <button onclick="displayHtml();">Download csv</button>
+    </form>
+
+    
     <div class="page_content_wrapper"></div>
 </body>
 
